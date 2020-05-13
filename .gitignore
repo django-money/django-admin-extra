@@ -1,0 +1,4 @@
+venv
+*.sw[pon]
+db.sqlite3
+__pycache__
