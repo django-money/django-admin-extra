@@ -173,3 +173,14 @@ class MoneyColumnTest(TestCase):
         text = self.column.render(record.price, record)
         self.assertIsInstance(text, str)
         self.assertEqual('10.00000 €', text)
+
+    def test_round_to_integer(self):
+        # Setup
+        record = models.MoneyModel(price=Money(10.1, 'EUR'))
+        self.column = tables.MoneyColumn(
+            decimals=0
+        )
+        # Test
+        text = self.column.render(record.price, record)
+        self.assertIsInstance(text, str)
+        self.assertEqual('10 €', text)

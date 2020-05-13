@@ -13,7 +13,7 @@ class MoneyColumn(columns.Column):
                  include_symbol=True, target_rate=None, target_currency=None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.decimals = decimals or self.decimals
+        self.decimals = decimals if decimals is not None else self.decimals
         self.currency_field = currency_field or self.currency_field
         self.locale = locale or get_current_locale()
         self.include_symbol = include_symbol
