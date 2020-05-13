@@ -4,20 +4,16 @@ from djmoney.money import Money, format_money, get_current_locale
 
 
 class MoneyColumn(columns.Column):
-    money_class = Money
+    decimals = None
     currency_field = None
     target_rate = None
     target_currency = None
 
-    def __init__(self, decimals=None, verbose=False, money_class=None,
-                 format_kwargs=None, currency_field=None, locale=None,
+    def __init__(self, decimals=None, currency_field=None, locale=None,
                  include_symbol=True, target_rate=None, target_currency=None,
                  *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.decimals = decimals
-        self.verbose = verbose
-        self.money_class = money_class or self.money_class
-        self.format_kwargs = format_kwargs or {}
+        self.decimals = decimals or self.decimals
         self.currency_field = currency_field or self.currency_field
         self.locale = locale or get_current_locale()
         self.include_symbol = include_symbol
@@ -43,6 +39,7 @@ class MoneyColumn(columns.Column):
 
         decimals = self._get_decimals(value, record)
 
+        # Ensure we have a Money obj
         if not isinstance(value, Money):
             value = Decimal(value)
             value = Money(
@@ -50,6 +47,7 @@ class MoneyColumn(columns.Column):
                 decimal_places=decimals,
             )
 
+        # We keep original if none is given
         if decimals is None:
             decimals = value.decimal_places
 

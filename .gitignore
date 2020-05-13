@@ -2,3 +2,5 @@ venv
 *.sw[pon]
 db.sqlite3
 __pycache__
+django_money_extra.egg-info
+dist/
